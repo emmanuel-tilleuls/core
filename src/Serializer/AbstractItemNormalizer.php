@@ -306,6 +306,10 @@ abstract class AbstractItemNormalizer extends AbstractObjectNormalizer
         // Revert attributes that aren't allowed to be changed after a post-denormalize check
         foreach (array_keys($data) as $attribute) {
             if (!$this->canAccessAttributePostDenormalize($object, $previousObject, $attribute, $context)) {
+                if (!\is_string($attribute)) {
+                    continue;
+                }
+
                 if (null !== $previousObject) {
                     $this->setValue($object, $attribute, $this->propertyAccessor->getValue($previousObject, $attribute));
                 } else {
